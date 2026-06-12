@@ -15,8 +15,8 @@ public:
     TablaHash(int);
     ~TablaHash();
 
-    void insertar(const Turno&);
-    Turno* buscar(int numero);
+    void insertar(Turno);
+    Turno* buscar(const string&);
 
 };
 
