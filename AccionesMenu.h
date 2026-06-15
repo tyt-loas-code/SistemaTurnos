@@ -4,13 +4,14 @@
 #include "ListaFeriadoBase.h"
 #include "MenuOrdenamiento.h"
 #include "BusquedaBinaria.h"
+#include "TablaHash.h"
 
 class AccionesMenu
 {
 private:
 public:
 
-    void cargarDatos( Lista* );
+    void cargarDatos(Lista*, TablaHash*);
 
     void guardarDatos(Lista* milista);
 

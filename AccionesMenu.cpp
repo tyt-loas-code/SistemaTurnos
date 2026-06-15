@@ -28,7 +28,7 @@ void actualizarLista(Lista* lista, Turno* arreglo, int tam)
     } while(actual != lista->getCabeza());
 }
 
-void AccionesMenu::cargarDatos(Lista* milista)
+void AccionesMenu::cargarDatos(Lista* milista, TablaHash* tabla)
 {
     ifstream archivo( "C:/Programas/Proyecto-Turnos-main/turnos.txt" );
     if ( !archivo.is_open() )
@@ -37,11 +37,29 @@ void AccionesMenu::cargarDatos(Lista* milista)
         return;
     }
     string c, n, a, p, m, h, f;
+    TablaHash temporal(101);
+    while (archivo >> c >> n >> a >> p >> m >> h >> f)
+    {
+        if (temporal.buscar(c) == nullptr)
+        {
+            Turno turno( c , n , a , p , m , h , f);
+            temporal.insertar(turno);
+        } else {
+            cout << "Archivo manipulado" << endl;
+            return;
+        }
+    }
+    
+    archivo.clear();
+    archivo.seekg(0);
+
     while ( archivo >> c >> n >> a >> p >> m >> h >> f )
     {
+        Turno turno(c , n , a , p , m , h , f);
         milista -> insertar( c , n , a , p , m , h , f );
+        tabla ->insertar(turno);
     }
-    cout<<"Archivos cargados" <<endl;
+    cout<<"Archivo cargado" <<endl;
     archivo.close();
 }
 

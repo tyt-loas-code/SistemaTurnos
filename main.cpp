@@ -8,13 +8,14 @@ using namespace std;
 int main()
 {
     Lista* miLista = new Lista();
+    TablaHash* tabla = new TablaHash(5);
     ListaFeriadosBase feriadosBase;
     feriadosBase.cargarDesdeArchivo("feriados.txt");
 
     string menu[]={"Registrar","Buscar","Eliminar","Ordenar Turnos","Busqueda binaria","Salir"};
     AccionesMenu accionesMenu;
     system("cls||clear");
-    accionesMenu.cargarDatos(miLista);
+    accionesMenu.cargarDatos(miLista, tabla);
     system("pause");
 
     int size = sizeof(menu)/sizeof(menu[0]);
