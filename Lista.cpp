@@ -84,9 +84,9 @@ void Lista::setCola(Nodo* newCola)
    this->cola = newCola;
 }
 
-void Lista::insertar(string cedula, string nombre, string apellido, string placa, string matricula, string hora, string fecha)\
+void Lista::insertar(string cedula, string nombre, string apellido, string placa, string hora, string fecha)\
 {
-    Nodo* nuevo = new Nodo(Turno(cedula, nombre, apellido, placa, matricula, hora, fecha), nullptr, nullptr);
+    Nodo* nuevo = new Nodo(Turno(cedula, nombre, apellido, placa, hora, fecha), nullptr, nullptr);
 
     if (cabeza == nullptr)
     {

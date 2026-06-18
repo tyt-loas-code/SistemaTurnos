@@ -25,7 +25,7 @@ void ListaFeriadosBase::agregar( int dia, int mes, bool inamovible )
 
 bool ListaFeriadosBase::cargarDesdeArchivo(string nombreArchivo)
 {
-    ifstream archivo("C:/Programas/Proyecto-Turnos-main/feriados.txt");
+    ifstream archivo("C:/Programas/SistemaTurnos-main/feriados.txt");
 
     if ( !archivo.is_open() )
     {

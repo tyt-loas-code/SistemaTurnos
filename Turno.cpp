@@ -107,30 +107,6 @@ void Turno::setPlaca(string newPlaca)
 }
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       Turno::getMatricula()
-// Purpose:    Implementation of Turno::getMatricula()
-// Return:     string
-////////////////////////////////////////////////////////////////////////
-
-string Turno::getMatricula(void)
-{
-   return matricula;
-}
-
-////////////////////////////////////////////////////////////////////////
-// Name:       Turno::setMatricula(string newMatricula)
-// Purpose:    Implementation of Turno::setMatricula()
-// Parameters:
-// - newMatricula
-// Return:     void
-////////////////////////////////////////////////////////////////////////
-
-void Turno::setMatricula(string newMatricula)
-{
-   matricula = newMatricula;
-}
-
-////////////////////////////////////////////////////////////////////////
 // Name:       Turno::getHora()
 // Purpose:    Implementation of Turno::getHora()
 // Return:     string
@@ -191,13 +167,12 @@ void Turno::setFecha(string newFecha)
 // Return:
 ////////////////////////////////////////////////////////////////////////
 
-Turno::Turno(string cedula, string nombre, string apellido, string placa, string matricula, string hora, string fecha)
+Turno::Turno(string cedula, string nombre, string apellido, string placa, string hora, string fecha)
 {
    this -> cedula    = cedula;
    this -> nombre    = nombre;
    this -> apellido  = apellido;
    this -> placa     = placa;
-   this -> matricula = matricula;
    this -> hora      = hora;
    this -> fecha     = fecha;
 }
@@ -207,7 +182,6 @@ Turno::Turno()
    this -> cedula    = "";
    this -> nombre    = "";
    this -> placa     = "";
-   this -> matricula = "";
    this -> hora      = "";
    this -> fecha     = "";
 }

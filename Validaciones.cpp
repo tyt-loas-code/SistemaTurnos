@@ -8,7 +8,7 @@ using namespace std;
 
 bool verificarExistenciaPlaca(string placa)
 {
-    ifstream archivo("C:/Programas/Proyecto-Turnos-main/turnos.txt");
+    ifstream archivo("C:/Programas/SistemaTurnos-main/turnos.txt");
     if (archivo.is_open()){
     } else {
         cout<<"No se encontro el archivo"<< endl;
@@ -27,7 +27,7 @@ bool verificarExistenciaPlaca(string placa)
 
 bool verificarExistencia(string cedula)
 {
-    ifstream archivo("C:/Programas/Proyecto-Turnos-main/turnos.txt");
+    ifstream archivo("C:/Programas/SistemaTurnos-main/turnos.txt");
     if (archivo.is_open()){
     } else {
         cout<<"No se encontro el archivo"<< endl;
@@ -46,7 +46,7 @@ bool verificarExistencia(string cedula)
 
 bool codigoProvincia(string cod)
 {
-   ifstream archivo("C:/Programas/Proyecto-Turnos-main/Provincias.txt");
+   ifstream archivo("C:/Programas/SistemaTurnos-main/Provincias.txt");
    if (!archivo.is_open())
    {
       cout<<"No se pudo abrir el arhivo"<<endl;
@@ -166,11 +166,6 @@ bool Validar::validarPlaca(string placa)
       return false;
       }
     return true;
-}
-
-bool Validar::validarMatricula(string matricula)
-{
-   return true;
 }
 
 bool Validar::validarHora(string hora)

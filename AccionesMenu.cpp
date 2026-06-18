@@ -30,19 +30,19 @@ void actualizarLista(Lista* lista, Turno* arreglo, int tam)
 
 void AccionesMenu::cargarDatos(Lista* milista, TablaHash* tabla)
 {
-    ifstream archivo( "C:/Programas/Proyecto-Turnos-main/turnos.txt" );
+    ifstream archivo( "C:/Programas/SistemaTurnos-main/turnos.txt" );
     if ( !archivo.is_open() )
     {
         cout << "No se encontro el archivo" << endl;
         return;
     }
-    string c, n, a, p, m, h, f;
+    string c, n, a, p, h, f;
     TablaHash temporal(101);
-    while (archivo >> c >> n >> a >> p >> m >> h >> f)
+    while (archivo >> c >> n >> a >> p>> h >> f)
     {
         if (temporal.buscar(c) == nullptr)
         {
-            Turno turno( c , n , a , p , m , h , f);
+            Turno turno( c , n , a , p , h , f);
             temporal.insertar(turno);
         } else {
             cout << "Archivo manipulado" << endl;
@@ -53,10 +53,10 @@ void AccionesMenu::cargarDatos(Lista* milista, TablaHash* tabla)
     archivo.clear();
     archivo.seekg(0);
 
-    while ( archivo >> c >> n >> a >> p >> m >> h >> f )
+    while ( archivo >> c >> n >> a >> p >> h >> f )
     {
-        Turno turno(c , n , a , p , m , h , f);
-        milista -> insertar( c , n , a , p , m , h , f );
+        Turno turno(c , n , a , p , h , f);
+        milista -> insertar( c , n , a , p  , h , f );
         tabla ->insertar(turno);
     }
     cout<<"Archivo cargado" <<endl;
@@ -66,88 +66,97 @@ void AccionesMenu::cargarDatos(Lista* milista, TablaHash* tabla)
 void AccionesMenu::ingresarTurno(Lista* milista, ListaFeriadosBase& feriadosBase)
 {
     Validar v;
+    bool validar;
     cout << "INGRESAR UN TURNO" << endl;
-    string cedula, nombre, apellido, placa, matricula, hora, fecha;
-    while (true) {
-        cout << "Ingrese la cedula (10 digitos): ";
+    string cedula, nombre, apellido, placa, hora, fecha, fechaLaborable;
+    do
+    {
+        cout << "Ingrese la cedula: ";
         cin >> cedula;
-        if (v.validarCedula(cedula)) break;
-    }
+        validar = v.validarCedula(cedula);
+    } while (!validar);
     
-    while (true) {
+    do
+    {
         cout << "Ingrese el nombre: ";
         cin >> nombre;
-        if (v.validarPalabra(nombre)) break;
-    }
+        validar = v.validarPalabra(nombre);
+    } while (!validar);    
 
-    while (true) {
+    do
+    {
         cout << "Ingrese el apellido: ";
         cin >> apellido;
-        if (v.validarPalabra(apellido)) break;
-    }
+        validar = v.validarPalabra(apellido);
+    }while (!validar);
 
-    while (true) {
+    do 
+    {
         cout << "Ingrese la placa (formato AAA1234): ";
         cin >> placa;
-        if (v.validarPlaca(placa)) break;
-    }
+        validar =  v.validarPlaca(placa);
+    }while (!validar);
 
-    cout << "Ingrese la matricula: ";
-    cin >> matricula;
-
-    while (true)
-    {
-        cout << "Ingrese la fecha (dd/mm/aaaa): ";
-        cin >> fecha;
-        if (v.validarFecha(fecha))
+    do
+    { 
+        do
         {
-            int d, m, a;
-            extraerDiaMesAnio(fecha, d, m, a);
-            if (fechaExiste(d, m, a)) break;
-            else cout << "Fecha no valida" << endl;
-        }
-    }
+            cout << "Ingrese la fecha (dd/mm/aaaa): ";
+            cin >> fecha;
+            validar = v.validarFecha(fecha);
+            if (validar)
+            {
+                int d, m, a;
+                extraerDiaMesAnio(fecha, d, m, a);
+                validar = fechaExiste(d, m, a);
+            }
+            if (!validar){
+                cout << "Fecha no valida" << endl;
+            }
+        }while (!validar);
 
-    string fechaLaborable = siguienteLaborable(fecha, feriadosBase);
-    if (fechaLaborable != fecha)
-    {
-        cout << "La fecha ingresada cae en fin de semana o feriado. Se asigna: " << fechaLaborable << endl;
-    }
-
-    while (true)
-    {
-        cout << "Ingrese la hora (HH:MM, de 08:00 a 16:00): ";
-        cin >> hora;
-
-        if (!v.validarHora(hora))
-            continue;
-
-        bool ocupado = false;
-        Nodo* actual = milista -> getCabeza();
-
-        if (actual != nullptr)
+        fechaLaborable = siguienteLaborable(fecha, feriadosBase);
+        if (fechaLaborable != fecha)
         {
-            do {
-                Turno t = actual->getTurno();
-                if (t.getFecha() == fechaLaborable && t.getHora() == hora)
-                {
-                    ocupado = true;
-                    break;
-                }
-
-                actual = actual -> getSiguiente();
-            } while (actual != milista -> getCabeza());
+            cout << "La fecha ingresada cae en fin de semana o feriado. Se asigna: " << fechaLaborable << endl;
         }
 
-        if (ocupado)
+        do
         {
-            cout << "Hora ocupada en esa fecha. Elija otra hora." << endl;
-        } else {
-            break;
-        }
-    }
+            do{
+                cout << "Ingrese la hora (HH:MM, de 08:00 a 16:00): ";
+                cin >> hora;
+                validar = v.validarHora(hora);
+            }while (!validar);
 
-    milista->insertar(cedula, nombre, apellido, placa, matricula, hora, fechaLaborable);
+            bool ocupado = false;
+            Nodo* actual = milista -> getCabeza();
+
+            if (actual != nullptr)
+            {
+                do {
+                    Turno t = actual->getTurno();
+                    if (t.getFecha() == fechaLaborable && t.getHora() == hora)
+                    {
+                        ocupado = true;
+                        break;
+                    }
+
+                    actual = actual -> getSiguiente();
+                } while (actual != milista -> getCabeza());
+            }
+
+            if (ocupado)
+            {
+                validar = false;
+                cout << "Hora ocupada en esa fecha. Elija otra hora." << endl;
+            } else {
+                validar = true;
+            }
+        }while(!validar);
+    }while (!validar);
+
+    milista->insertar(cedula, nombre, apellido, placa, hora, fechaLaborable);
     cout << "Turno registrado exitosamente." << endl;
 
     guardarDatos(milista);
@@ -186,7 +195,6 @@ void AccionesMenu::guardarDatos(Lista* milista)
                     << t.getNombre()    << " "
                     << t.getApellido()  << " "
                     << t.getPlaca()     << " "
-                    << t.getMatricula() << " "
                     << t.getHora()      << " "
                     << t.getFecha()     << endl;
             actual = actual->getSiguiente();
@@ -209,7 +217,6 @@ void AccionesMenu::imprimirTurno(Lista* miLista) {
         cout << "Nombre: " << t.getNombre() << endl;
         cout << "Apellido: " << t.getApellido() << endl;
         cout << "Placa: " << t.getPlaca() << endl;
-        cout << "Matricula: " << t.getMatricula() << endl;
         cout << "Hora: " << t.getHora() << endl;
         cout << "Fecha: " << t.getFecha() << endl;
     } else {

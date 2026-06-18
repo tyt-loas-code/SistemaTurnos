@@ -31,10 +31,6 @@ public:
 
    void setPlaca(string newPlaca);
 
-   string getMatricula(void);
-
-   void setMatricula(string newMatricula);
-
    string getHora(void);
 
    void setHora(string newHora);
@@ -43,7 +39,7 @@ public:
 
    void setFecha(string newFecha);
 
-   Turno(string cedula, string nombre, string apellido, string placa, string matricula, string hora, string fecha);
+   Turno(string cedula, string nombre, string apellido, string placa, string hora, string fecha);
 
    Turno();
    ~Turno();
@@ -55,7 +51,6 @@ private:
    string nombre;
    string apellido;
    string placa;
-   string matricula;
    string hora;
    string fecha;
 

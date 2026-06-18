@@ -28,7 +28,7 @@ public:
 
    void setCola( Nodo* );
 
-   void insertar(string cedula, string nombre, string apellido, string placa, string matricula, string hora, string fecha);
+   void insertar(string cedula, string nombre, string apellido, string placa, string hora, string fecha);
 
    void eliminar(string);
 
