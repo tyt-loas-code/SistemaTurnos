@@ -25,18 +25,18 @@ bool verificarExistenciaPlaca(string placa)
     return false;
 }
 
-bool verificarExistencia(string cedula)
+bool Validar::verificarExistencia(string cedula)
 {
     ifstream archivo("C:/Programas/SistemaTurnos-main/turnos.txt");
     if (archivo.is_open()){
     } else {
-        cout<<"No se encontro el archivo"<< endl;
         archivo.close();
         return false;
     }
     string nombre, ced;
     while (archivo >> ced) {
       if (ced == cedula){
+         cout << "Cedula con turno registrado" << endl;
          return true;
       }
     }
@@ -132,11 +132,6 @@ bool Validar::validarCedula(string cedula)
    {
       return false;
    }
-   if (verificarExistencia(cedula))
-   {
-    cout<<"Cedula con turno registrado"<<endl;
-    return false;
-   }
    return true;
 }
 
@@ -190,5 +185,11 @@ bool Validar::validarHora(string hora)
 
 bool Validar::validarFecha(string fecha)
 {
+   regex patron(R"(^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])/\d{4}$)");
+   if (!regex_match(fecha, patron))
+   {
+      cout << "Formato de fecha invalido. Use DD/MM/AAAA" << endl;
+      return false;
+   }
    return true;
 }

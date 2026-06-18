@@ -10,6 +10,8 @@ class Validar : public Validaciones
 
         bool validarPalabra  ( string palabra ) override;
 
+        bool verificarExistencia ( string cedula ) override;
+
         bool validarPlaca    ( string placa ) override;
 
         bool validarHora     ( string hora ) override;

@@ -63,7 +63,7 @@ void AccionesMenu::cargarDatos(Lista* milista, TablaHash* tabla)
     archivo.close();
 }
 
-void AccionesMenu::ingresarTurno(Lista* milista, ListaFeriadosBase& feriadosBase)
+void AccionesMenu::ingresarTurno(Lista* milista, ListaFeriadosBase& feriadosBase, TablaHash* tabla)
 {
     Validar v;
     bool validar;
@@ -73,7 +73,11 @@ void AccionesMenu::ingresarTurno(Lista* milista, ListaFeriadosBase& feriadosBase
     {
         cout << "Ingrese la cedula: ";
         cin >> cedula;
-        validar = v.validarCedula(cedula);
+        if (v.validarCedula(cedula) && !(v.verificarExistencia(cedula))){
+            validar = true;
+        } else {
+            validar = false;
+        }
     } while (!validar);
     
     do
@@ -153,11 +157,13 @@ void AccionesMenu::ingresarTurno(Lista* milista, ListaFeriadosBase& feriadosBase
             } else {
                 validar = true;
             }
-        }while(!validar);
+        }while(!validar);        
     }while (!validar);
 
+    Turno t(cedula, nombre, apellido, placa, hora, fechaLaborable);
     milista->insertar(cedula, nombre, apellido, placa, hora, fechaLaborable);
     cout << "Turno registrado exitosamente." << endl;
+    tabla ->insertar(t);
 
     guardarDatos(milista);
     cin.ignore();
@@ -206,9 +212,15 @@ void AccionesMenu::guardarDatos(Lista* milista)
 
 void AccionesMenu::imprimirTurno(Lista* miLista) {
     string cedula;
+    bool validar;
+    Validar v;
     cout << "IMPRIMIR TURNO" << endl;
-    cout << "Ingrese la cedula: ";
-    cin >> cedula;
+    do
+    {
+        cout << "Ingrese la cedula: ";
+        cin >> cedula;
+        validar = v.validarCedula(cedula);
+    } while (!validar);
     Nodo* nodo = miLista->buscarTurno(cedula);
     if (nodo != nullptr) {
         Turno t = nodo->getTurno();
@@ -221,6 +233,34 @@ void AccionesMenu::imprimirTurno(Lista* miLista) {
         cout << "Fecha: " << t.getFecha() << endl;
     } else {
         cout << "No se encontro ningun turno registrado con esa cedula." << endl;
+    }
+    cin.ignore();
+    cin.get();
+}
+
+void AccionesMenu::buscarTurno(TablaHash* tabla)
+{
+    bool validar;
+    string cedula;
+    Validar v;
+    do
+    {
+        cout << "Ingrese la cedula: ";
+        cin >> cedula;
+        validar = v.validarCedula(cedula);
+    } while (!validar);
+    Turno* t = tabla ->buscar(cedula);
+    if (t != nullptr)
+    {
+        cout << "TURNO" << endl;
+        cout << "Cedula: " << t->getCedula() << endl;
+        cout << "Nombre: " << t->getNombre() << endl;
+        cout << "Apellido: " << t->getApellido() << endl;
+        cout << "Placa: " << t->getPlaca() << endl;
+        cout << "Hora: " << t->getHora() << endl;
+        cout << "Fecha: " << t->getFecha() << endl;
+    } else {
+        cout << "Turno no encontrado en la tabla" << endl;
     }
     cin.ignore();
     cin.get();
@@ -327,6 +367,8 @@ void AccionesMenu::ordenarTurnos(Lista* milista)
                 break;
             case 4:
                 m.ordenarPorFecha(arregloTurno, tam);
+                actualizarLista(milista, arregloTurno, tam);
+                datosCargados = false;
                 break;
             case 5:
                 seguir = false;

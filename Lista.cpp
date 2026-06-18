@@ -146,6 +146,11 @@ void Lista::eliminar(string cedula)
 
 Nodo* Lista::buscarTurno( string cedula )
 {
+   if (cabeza == nullptr)
+   {
+      return nullptr;
+   }
+
    Nodo* actual = cabeza;
 
    do
@@ -157,7 +162,7 @@ Nodo* Lista::buscarTurno( string cedula )
 
       actual = actual -> getSiguiente();
 
-   } while ( actual -> getSiguiente() != cabeza );
+   } while ( actual != cabeza);
 
    return nullptr;
 }

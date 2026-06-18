@@ -12,7 +12,7 @@ int main()
     ListaFeriadosBase feriadosBase;
     feriadosBase.cargarDesdeArchivo("feriados.txt");
 
-    string menu[]={"Registrar","Buscar","Eliminar","Ordenar Turnos","Busqueda binaria","Salir"};
+    string menu[]={"Registrar","Buscar","Eliminar","Buscar por Hash","Ordenar Turnos","Busqueda binaria","Salir"};
     AccionesMenu accionesMenu;
     system("cls||clear");
     accionesMenu.cargarDatos(miLista, tabla);
@@ -58,7 +58,7 @@ int main()
             switch (op)
             {
             case 0:
-                accionesMenu.ingresarTurno(miLista, feriadosBase);
+                accionesMenu.ingresarTurno(miLista, feriadosBase, tabla);
                 break;
             case 1:
                accionesMenu.imprimirTurno(miLista);
@@ -67,12 +67,15 @@ int main()
                 accionesMenu.eliminarTurno(miLista);
                 break;
             case 3:
-                accionesMenu.ordenarTurnos(miLista);
+                accionesMenu.buscarTurno(tabla);
                 break;
             case 4:
-                accionesMenu.busquedaBinaria(miLista);
+                accionesMenu.ordenarTurnos(miLista);
                 break;
             case 5:
+                accionesMenu.busquedaBinaria(miLista);
+                break;
+            case 6:
                 seguir = false;
                 break;
             }
@@ -80,8 +83,5 @@ int main()
     }
     accionesMenu.guardarDatos(miLista);
     delete miLista;
-
-
-
     return 0;
 }

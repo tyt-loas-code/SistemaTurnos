@@ -19,6 +19,8 @@ public:
 
    virtual bool validarPalabra(string)   = 0;
 
+   virtual bool verificarExistencia(string) = 0;
+
    virtual bool validarPlaca(string)     = 0;
 
    virtual bool validarHora(string)      = 0;

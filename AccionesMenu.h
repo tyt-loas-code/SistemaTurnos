@@ -15,11 +15,13 @@ public:
 
     void guardarDatos(Lista* milista);
 
-    void ingresarTurno( Lista*, ListaFeriadosBase& );
+    void ingresarTurno( Lista*, ListaFeriadosBase&, TablaHash*);
 
     void eliminarTurno( Lista* );
 
     void imprimirTurno( Lista* );
+
+    void buscarTurno(TablaHash*);
 
     void ordenarTurnos(Lista*);
 

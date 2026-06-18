@@ -12,6 +12,7 @@ int TablaHash::hash(const string& cedula)
 
 TablaHash::TablaHash(int capacidad)
 {
+    this -> capacidad = capacidad;
     tabla = new Celda*[capacidad];
 
     for(int i = 0; i < capacidad; i++)
@@ -59,6 +60,5 @@ Turno* TablaHash::buscar(const string& cedula)
         }
         actual = actual -> siguiente;
     }
-
     return nullptr;
 }

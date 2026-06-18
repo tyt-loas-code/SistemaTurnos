@@ -1,4 +1,6 @@
 #include "FechaUtils.h"
+#include <ctime>
+#include <iostream>
 
 using namespace std;
 
@@ -142,19 +144,32 @@ int diasEnMes(int mes, int anio)
 
 bool fechaExiste(int dia, int mes, int anio)
 {
-        if ( anio < 2026 ) {
-            return false;
-        }
+    time_t t = time(nullptr);
+    tm* hoy = localtime(&t);
 
-        if ( mes < 5 || mes > 12 ) {
-            return false;
-        }
+    int diaActual = hoy->tm_mday;
+    int mesActual = hoy->tm_mon + 1;
+    int anioActual = hoy->tm_year + 1900;
+    int horaActual = hoy->tm_hour;
+    if (dia < 1 || dia > diasEnMes(mes, anio))
+        return false;
 
-        if (   (dia < 1) || (dia > diasEnMes(mes, anio))   ) {
-            return false;
-        }
+    if (anio < anioActual)
+        return false;
 
+    if (anio == anioActual && mes < mesActual)
+        return false;
 
+    if (anio == anioActual && mes == mesActual && dia < diaActual)
+        return false;
+
+    if (anio == anioActual && mes == mesActual && dia == diaActual && horaActual >= 16)
+    {
+        std::cout << "Mas de las 16:00. ";
+        return false;
+    }
+    
+        
     return true;
 }
 
