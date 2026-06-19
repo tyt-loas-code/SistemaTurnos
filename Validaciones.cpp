@@ -163,7 +163,18 @@ bool Validar::validarPlaca(string placa)
     return true;
 }
 
-bool Validar::validarHora(string hora)
+bool Validar::validarFecha(string fecha)
+{
+   regex patron(R"(^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])/\d{4}$)");
+   if (!regex_match(fecha, patron))
+   {
+      cout << "Formato de fecha invalido. Use DD/MM/AAAA" << endl;
+      return false;
+   }
+   return true;
+}
+
+bool Validar::validarHora(string hora, string fecha)
 {
    time_t t = time(nullptr);
    tm* hoy = localtime(&t);
@@ -176,24 +187,20 @@ bool Validar::validarHora(string hora)
       return false;
    }
 
-   int hh, mm;
+   int hh, mm, d, m, aa, horaCorrecta;
    extraerHoraMinutos(hora, hh, mm);
+   extraerDiaMesAnio(fecha, d, m, aa);
+   if(fechaExiste(d,m,aa))
+   {
+      horaCorrecta = 8;
+   } else {
+      horaCorrecta = horaActual;
+   }
 
-   if (hh >= horaActual && hh <= 16)
+   if (hh >= horaCorrecta && hh <= 16)
    {
       return true;
    }
    cout << "Hora fuera del horario laboral (8:00 a 16:00, turnos de 1 hora)" << endl;
    return false;
-}
-
-bool Validar::validarFecha(string fecha)
-{
-   regex patron(R"(^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])/\d{4}$)");
-   if (!regex_match(fecha, patron))
-   {
-      cout << "Formato de fecha invalido. Use DD/MM/AAAA" << endl;
-      return false;
-   }
-   return true;
 }

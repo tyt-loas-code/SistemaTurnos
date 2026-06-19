@@ -14,7 +14,7 @@ class Validar : public Validaciones
 
         bool validarPlaca    ( string placa ) override;
 
-        bool validarHora     ( string hora ) override;
+        bool validarHora     ( string hora, string fecha ) override;
 
         bool validarFecha    ( string fecha ) override;
 

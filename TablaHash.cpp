@@ -62,3 +62,42 @@ Turno* TablaHash::buscar(const string& cedula)
     }
     return nullptr;
 }
+
+bool TablaHash::eliminar(const string& cedula)
+{
+    int pos = hash(cedula);
+    Celda* actual = tabla[pos];
+    Celda* anterior = nullptr;
+    while(actual != nullptr)
+    {
+        if(actual->dato.getCedula() == cedula)
+        {
+            if(anterior == nullptr)
+            {
+                *(tabla + pos) = actual->siguiente;
+            }
+            else
+            {
+                anterior->siguiente = actual->siguiente;
+            }
+
+            delete actual;
+            return true;
+        }
+
+        anterior = actual;
+        actual = actual->siguiente;
+    }
+
+    return false;
+}
+
+bool TablaHash::estaVacia()
+{
+    for (int i = 0; i < capacidad; i++)
+    {
+        if (*(tabla + i) != nullptr)
+            return false;
+    }
+    return true;
+}

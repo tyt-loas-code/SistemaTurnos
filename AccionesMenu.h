@@ -17,7 +17,7 @@ public:
 
     void ingresarTurno( Lista*, ListaFeriadosBase&, TablaHash*);
 
-    void eliminarTurno( Lista* );
+    void eliminarTurno( Lista*, TablaHash* );
 
     void imprimirTurno( Lista* );
 

@@ -131,7 +131,7 @@ void AccionesMenu::ingresarTurno(Lista* milista, ListaFeriadosBase& feriadosBase
             do{
                 cout << "Ingrese la hora (HH:MM, de 08:00 a 16:00): ";
                 cin >> hora;
-                validar = v.validarHora(hora);
+                validar = v.validarHora(hora, fechaLaborable);
             }while (!validar);
 
             bool ocupado = false;
@@ -171,15 +171,35 @@ void AccionesMenu::ingresarTurno(Lista* milista, ListaFeriadosBase& feriadosBase
     cin.get();
 }
 
-void AccionesMenu::eliminarTurno(Lista* miLista)
+void AccionesMenu::eliminarTurno(Lista* miLista, TablaHash* tabla)
 {
     string cedula;
+    bool eliminado = false;
+
+    if (miLista->getCabeza() == nullptr)
+    {
+        cout << "No existen turnos cargados" << endl;
+        system("pause");
+        return;
+    }
     cout << "ELIMINAR TURNO" << endl;
     cout << "Ingrese la cedula del turno que desea eliminar: ";
     cin >> cedula;
-    miLista -> eliminar(cedula);
-    cout << "Turno eliminado (si existia)." << endl;
-    guardarDatos(miLista);
+    eliminado = tabla->eliminar(cedula);
+    if (eliminado)
+    {
+        if (miLista != nullptr)
+        {
+            miLista->eliminar(cedula);
+        }
+        cout << "Turno eliminado" << endl;
+    } else {
+        cout << "El turno no existia" << endl;
+    }
+    if (miLista != nullptr)
+    {
+        guardarDatos(miLista);
+    }
     cin.ignore();
     cin.get();
 }
@@ -215,6 +235,13 @@ void AccionesMenu::imprimirTurno(Lista* miLista) {
     string cedula;
     bool validar;
     Validar v;
+    if (miLista->getCabeza() == nullptr)
+    {
+        cout << "No existen turnos cargados" << endl;
+        system("pause");
+        return;
+    }
+    
     cout << "IMPRIMIR TURNO" << endl;
     do
     {
@@ -244,6 +271,11 @@ void AccionesMenu::buscarTurno(TablaHash* tabla)
     bool validar;
     string cedula;
     Validar v;
+    if (tabla->estaVacia()){
+        cout << "No existen turnos cargados" << endl;
+        system("pause");
+        return;
+    }
     do
     {
         cout << "Ingrese la cedula: ";
@@ -296,6 +328,11 @@ Turno* cargarArreglo(Lista* miLista, int& tam)
 
 int AccionesMenu::ordenarTurnos(Lista* milista)
 {
+    if (milista->getCabeza() == nullptr){
+        cout << "No existen turnos cargados" << endl;
+        system("pause");
+        return -1;
+    }
     int tam;
     Turno* arregloTurno = cargarArreglo(milista, tam);
     MenuOrdenamiento m;
@@ -388,6 +425,11 @@ int AccionesMenu::ordenarTurnos(Lista* milista)
 
 void AccionesMenu::busquedaBinaria(Lista* miLista, int orden)
 {
+    if (miLista->getCabeza() == nullptr){
+        cout << "No existen turnos cargados" << endl;
+        system("pause");
+        return;
+    }
     int tam;
     int pos;
     Turno* arregloTurno = cargarArreglo(miLista, tam);

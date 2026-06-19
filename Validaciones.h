@@ -23,7 +23,7 @@ public:
 
    virtual bool validarPlaca(string)     = 0;
 
-   virtual bool validarHora(string)      = 0;
+   virtual bool validarHora(string, string)      = 0;
 
    virtual bool validarFecha(string)     = 0;
 

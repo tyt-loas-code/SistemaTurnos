@@ -17,7 +17,8 @@ public:
 
     void insertar(Turno);
     Turno* buscar(const string&);
-
+    bool eliminar(const string&);
+    bool estaVacia();
 };
 
 #endif

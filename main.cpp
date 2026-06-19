@@ -67,7 +67,7 @@ int main()
                     accionesMenu.imprimirTurno(miLista);
                     break;
                 case 2:
-                    accionesMenu.eliminarTurno(miLista);
+                    accionesMenu.eliminarTurno(miLista, tabla);
                     break;
                 case 3:
                     accionesMenu.buscarTurno(tabla);
