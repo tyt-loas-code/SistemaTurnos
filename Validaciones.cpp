@@ -3,6 +3,7 @@
 #include <regex>
 #include <iostream>
 #include <fstream>
+#include <ctime>
 
 using namespace std;
 
@@ -164,6 +165,10 @@ bool Validar::validarPlaca(string placa)
 
 bool Validar::validarHora(string hora)
 {
+   time_t t = time(nullptr);
+   tm* hoy = localtime(&t);
+   int horaActual = hoy ->tm_hour;
+
    regex patron("^([0-1][0-9]|2[0-3]):00$");
    if (!regex_match(hora, patron))
    {
@@ -174,7 +179,7 @@ bool Validar::validarHora(string hora)
    int hh, mm;
    extraerHoraMinutos(hora, hh, mm);
 
-   if (hh >= 8 && hh <= 16)
+   if (hh >= horaActual && hh <= 16)
    {
       return true;
    }
