@@ -7,6 +7,7 @@ using namespace std;
 
 int main()
 {
+    bool ingresar;
     Lista* miLista = new Lista();
     TablaHash* tabla = new TablaHash(5);
     ListaFeriadosBase feriadosBase;
@@ -15,73 +16,76 @@ int main()
     string menu[]={"Registrar","Buscar","Eliminar","Buscar por Hash","Ordenar Turnos","Busqueda binaria","Salir"};
     AccionesMenu accionesMenu;
     system("cls||clear");
-    accionesMenu.cargarDatos(miLista, tabla);
+    ingresar = accionesMenu.cargarDatos(miLista, tabla);
     system("pause");
 
     int size = sizeof(menu)/sizeof(menu[0]);
-    int op = 0, tecla;
+    int op = 0, tecla, orden = -1;
     bool seguir = true;
 
-    while(seguir)
+    if (ingresar)
     {
-        system("cls||clear");
-        cout << "==== MENU ====" << endl;
-        for (int i = 0; i < size ; i++)
+        while(seguir)
         {
-            if (i == op)
+            system("cls||clear");
+            cout << "==== MENU ====" << endl;
+            for (int i = 0; i < size ; i++)
             {
-                cout << "-> ";
-            } else {
-                cout << "   ";
+                if (i == op)
+                {
+                    cout << "-> ";
+                } else {
+                    cout << "   ";
+                }
+                cout << menu[i] << endl;
             }
-            cout << menu[i] << endl;
-        }
-        tecla = _getch();
-        if (tecla==224 || tecla == 0)
-        {
             tecla = _getch();
-
-            if (tecla == 72)
+            if (tecla==224 || tecla == 0)
             {
-                op --;
-                if (op < 0){
-                    op = size -1;
-                }
-            } else if (tecla == 80) {
-                op++;
+                tecla = _getch();
 
-                if (op >= size){
-                    op = 0;
+                if (tecla == 72)
+                {
+                    op --;
+                    if (op < 0){
+                        op = size -1;
+                    }
+                } else if (tecla == 80) {
+                    op++;
+
+                    if (op >= size){
+                        op = 0;
+                    }
                 }
-            }
-        } else if (tecla == 13){
-            switch (op)
-            {
-            case 0:
-                accionesMenu.ingresarTurno(miLista, feriadosBase, tabla);
-                break;
-            case 1:
-               accionesMenu.imprimirTurno(miLista);
-                break;
-            case 2:
-                accionesMenu.eliminarTurno(miLista);
-                break;
-            case 3:
-                accionesMenu.buscarTurno(tabla);
-                break;
-            case 4:
-                accionesMenu.ordenarTurnos(miLista);
-                break;
-            case 5:
-                accionesMenu.busquedaBinaria(miLista);
-                break;
-            case 6:
-                seguir = false;
-                break;
+            } else if (tecla == 13){
+                switch (op)
+                {
+                case 0:
+                    accionesMenu.ingresarTurno(miLista, feriadosBase, tabla);
+                    break;
+                case 1:
+                    accionesMenu.imprimirTurno(miLista);
+                    break;
+                case 2:
+                    accionesMenu.eliminarTurno(miLista);
+                    break;
+                case 3:
+                    accionesMenu.buscarTurno(tabla);
+                    break;
+                case 4:
+                    orden = accionesMenu.ordenarTurnos(miLista);
+                    break;
+                case 5:
+                    accionesMenu.busquedaBinaria(miLista, orden);
+                    break;
+                case 6:
+                    seguir = false;
+                    break;
+                }
             }
         }
+        accionesMenu.guardarDatos(miLista);
     }
-    accionesMenu.guardarDatos(miLista);
     delete miLista;
     return 0;
 }

@@ -11,7 +11,7 @@ class AccionesMenu
 private:
 public:
 
-    void cargarDatos(Lista*, TablaHash*);
+    bool cargarDatos(Lista*, TablaHash*);
 
     void guardarDatos(Lista* milista);
 
@@ -23,9 +23,9 @@ public:
 
     void buscarTurno(TablaHash*);
 
-    void ordenarTurnos(Lista*);
+    int ordenarTurnos(Lista*);
 
-    void busquedaBinaria(Lista*);
+    void busquedaBinaria(Lista*, int);
 
     void generarCorreos( Lista* );
 

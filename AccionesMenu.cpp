@@ -28,13 +28,13 @@ void actualizarLista(Lista* lista, Turno* arreglo, int tam)
     } while(actual != lista->getCabeza());
 }
 
-void AccionesMenu::cargarDatos(Lista* milista, TablaHash* tabla)
+bool AccionesMenu::cargarDatos(Lista* milista, TablaHash* tabla)
 {
     ifstream archivo( "C:/Programas/SistemaTurnos-main/turnos.txt" );
     if ( !archivo.is_open() )
     {
         cout << "No se encontro el archivo" << endl;
-        return;
+        return true;
     }
     string c, n, a, p, h, f;
     TablaHash temporal(101);
@@ -45,8 +45,8 @@ void AccionesMenu::cargarDatos(Lista* milista, TablaHash* tabla)
             Turno turno( c , n , a , p , h , f);
             temporal.insertar(turno);
         } else {
-            cout << "Archivo manipulado" << endl;
-            return;
+            cout << "Archivo manipulado, saliendo del programa." << endl;
+            return false;
         }
     }
     
@@ -61,6 +61,7 @@ void AccionesMenu::cargarDatos(Lista* milista, TablaHash* tabla)
     }
     cout<<"Archivo cargado" <<endl;
     archivo.close();
+    return true;
 }
 
 void AccionesMenu::ingresarTurno(Lista* milista, ListaFeriadosBase& feriadosBase, TablaHash* tabla)
@@ -293,7 +294,7 @@ Turno* cargarArreglo(Lista* miLista, int& tam)
 
 
 
-void AccionesMenu::ordenarTurnos(Lista* milista)
+int AccionesMenu::ordenarTurnos(Lista* milista)
 {
     int tam;
     Turno* arregloTurno = cargarArreglo(milista, tam);
@@ -302,7 +303,7 @@ void AccionesMenu::ordenarTurnos(Lista* milista)
     system("cls||clear");
 
     int size = sizeof(menu)/sizeof(menu[0]);
-    int op = 0, tecla;
+    int op = 0, tecla, orden = -1;
     bool seguir = true;
     bool datosCargados = true;
 
@@ -349,26 +350,31 @@ void AccionesMenu::ordenarTurnos(Lista* milista)
                 m.ordenarPorCedula(arregloTurno, tam);
                 actualizarLista(milista, arregloTurno, tam);
                 datosCargados = false;
+                orden = 1;
                 break;
             case 1:
                 m.ordenarPorNombre(arregloTurno, tam);
                 actualizarLista(milista, arregloTurno, tam);
                 datosCargados = false;
+                orden = -1;
                 break;
             case 2:
                 m.ordenarPorApellido(arregloTurno, tam);
                 actualizarLista(milista, arregloTurno, tam);
                 datosCargados = false;
+                orden = -1;
                 break;
             case 3:
                 m.ordenarPorPlaca(arregloTurno, tam);
                 actualizarLista(milista, arregloTurno, tam);
                 datosCargados = false;
+                orden = 3;
                 break;
             case 4:
                 m.ordenarPorFecha(arregloTurno, tam);
                 actualizarLista(milista, arregloTurno, tam);
                 datosCargados = false;
+                orden = 2;
                 break;
             case 5:
                 seguir = false;
@@ -377,14 +383,16 @@ void AccionesMenu::ordenarTurnos(Lista* milista)
         }
     }
     delete[] arregloTurno;
+    return orden;
 }
 
-void AccionesMenu::busquedaBinaria(Lista* miLista)
+void AccionesMenu::busquedaBinaria(Lista* miLista, int orden)
 {
     int tam;
+    int pos;
     Turno* arregloTurno = cargarArreglo(miLista, tam);
     BusquedaBinaria b;
-    string menu[]={"Buscar cedula","Buscar nombre","Buscar placa","Salir"};
+    string menu[]={"Buscar cedula","Buscar fecha proxima","Buscar placa","Salir"};
     system("cls||clear");
     string buscar;
 
@@ -395,7 +403,7 @@ void AccionesMenu::busquedaBinaria(Lista* miLista)
 
     while(seguir)
     {
-        bool validar = false;
+        bool validar;
         Validar v;
         if (!datosCargados)
         {
@@ -435,28 +443,63 @@ void AccionesMenu::busquedaBinaria(Lista* miLista)
             switch (op)
             {
             case 0:
-                while(!validar){
-                    cout << "Ingrese la cedula" << endl;
-                    cin >> buscar;
-                    validar=v.validarCedula(buscar);
+                if(orden == 1){
+                    do{
+                        cout << "Ingrese la cedula" << endl;
+                        cin >> buscar;
+                        validar=v.validarCedula(buscar);
+                    }while (!validar);
+                    pos = b.buscquedaCedula(arregloTurno, tam, buscar);
+                    if (pos >= 0)
+                    {
+                        cout << "Cedula: " <<(arregloTurno + pos)->getCedula() << endl;
+                        cout << "Para la fecha :" << (arregloTurno + pos)->getFecha() << endl;
+                    } else {
+                        cout << "No se encontro ninguna cedula" << endl;
+                    }
+                } else {
+                    cout << "Ordenar por cedula" << endl;
                 }
-                b.buscquedaCedula(arregloTurno, size, buscar);
+                system("pause");
                 break;
             case 1:
-                b.buscquedaNombre(arregloTurno, size, buscar);
-                while(!validar){
-                    cout << "Ingrese el nombre" << endl;
-                    cin >> buscar;
-                    validar=v.validarPalabra(buscar);
+                if (orden == 2){
+                    do{
+                        cout << "Ingrese la fecha con el formato DD/MM/AAAA" << endl;
+                        cin >> buscar;
+                        validar=v.validarFecha(buscar);
+                    } while(!validar);
+                    pos = b.buscquedaFechaIgualOMayor(arregloTurno, tam, buscar);
+                    if (pos >= 0)
+                    {
+                        cout << "Fecha proxima: " <<(arregloTurno + pos)->getFecha() << endl;
+                    } else {
+                        cout << "No se encontro niguna fecha" << endl;
+                    }
+                } else {
+                    cout << "Ordenar por fecha" << endl;
                 }
+                system("pause");
                 break;
             case 2:
-                b.buscarPlaca(arregloTurno, size, buscar);
-                while(!validar){
-                    cout << "Ingrese la placa" << endl;
-                    cin >> buscar;
-                    validar=v.validarPlaca(buscar);
+                if (orden == 3){
+                    do{
+                        cout << "Ingrese la placa" << endl;
+                        cin >> buscar;
+                        validar=v.validarPlaca(buscar);
+                    } while(!validar);
+                    pos = b.buscarPlaca(arregloTurno, tam, buscar);
+                    if (pos >= 0)
+                    {
+                        cout << "Fecha proxima: " <<(arregloTurno + pos)->getFecha() << endl;
+                    } else {
+                        cout << "Placa: " <<(arregloTurno + pos)->getPlaca() << endl;
+                        cout << "Para la fecha :" << (arregloTurno + pos)->getFecha() << endl;
+                    }
+                } else {
+                    cout << "Ordenar por placa" << endl;
                 }
+                system("pause");
                 break;
             case 3:
                 seguir = false;

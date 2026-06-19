@@ -65,39 +65,38 @@ bool codigoProvincia(string cod)
 
 auto validarCedulaCorrecta = [](std::string cedula) -> bool
 {
-    int suma = 0;
+   int suma = 0;
 
-    for (int i = 0; i < 9; i++)
-    {
-        int num = *(cedula.c_str() + i) - '0';
+   for (int i = 0; i < 9; i++)
+   {
+      int num = *(cedula.c_str() + i) - '0';
 
-        if (i % 2 == 0)
-        {
-            num *= 2;
+      if (i % 2 == 0)
+      {
+         num *= 2;
 
-            if (num > 9)
-            {
-                num -= 9;
-            }
-        }
+         if (num > 9)
+         {
+            num -= 9;
+         }
+      }
 
-        suma += num;
-    }
+      suma += num;
+   }
 
-    int digitoVerificador = 10 - (suma % 10);
+   int digitoVerificador = 10 - (suma % 10);
 
-    if (digitoVerificador == 10)
-    {
-        digitoVerificador = 0;
-    }
+   if (digitoVerificador == 10)
+   {
+      digitoVerificador = 0;
+   }
 
-    if (digitoVerificador != (*(cedula.c_str() + 9) - '0'))
-    {
-        std::cout << "Cedula incorrecta" << std::endl;
-        return false;
-    }
-
-    return true;
+   if (digitoVerificador != (*(cedula.c_str() + 9) - '0'))
+   {
+      std::cout << "Cedula incorrecta" << std::endl;
+      return false;
+   }
+   return true;
 };
 
 int obtenerSize(string palabra)
@@ -165,22 +164,22 @@ bool Validar::validarPlaca(string placa)
 
 bool Validar::validarHora(string hora)
 {
-    regex patron("^([0-1][0-9]|2[0-3]):[0-5][0-9]$");
-    if (!regex_match(hora, patron))
-    {
-        cout << "Formato de hora invalido. Use HH:MM" << endl;
-        return false;
-    }
+   regex patron("^([0-1][0-9]|2[0-3]):00$");
+   if (!regex_match(hora, patron))
+   {
+      cout << "Formato de hora invalido. Use HH:00 en punto" << endl;
+      return false;
+   }
 
-    int hh, mm;
-    extraerHoraMinutos(hora, hh, mm);
+   int hh, mm;
+   extraerHoraMinutos(hora, hh, mm);
 
-    if (hh >= 8 && hh <= 16)
-    {
-        return true;
-    }
-    cout << "Hora fuera del horario laboral (8:00 a 17:00, turnos de 1 hora)" << endl;
-    return false;
+   if (hh >= 8 && hh <= 16)
+   {
+      return true;
+   }
+   cout << "Hora fuera del horario laboral (8:00 a 16:00, turnos de 1 hora)" << endl;
+   return false;
 }
 
 bool Validar::validarFecha(string fecha)
